@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infografía: Hardware 3.2</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #00f2ff;
+            --secondary: #7000ff;
+            --dark: #0a0a12;
+            --glass: rgba(255, 255, 255, 0.05);
+            --text: #e0e0e0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        /* Background Animation */
+        .bg-gradient {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: radial-gradient(circle at 10% 20%, #1a1a2e 0%, #000000 90%);
+        }
+
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 10s infinite ease-in-out;
+        }
+
+        .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -50px; left: -50px; }
+        .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: 0; right: 0; animation-delay: -5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(30px, 50px); }
+        }
+
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Hero Section */
+        header {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 20px;
+            text-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+        }
+
+        header p {
+            font-size: 1.5rem;
+            max-width: 600px;
+            opacity: 0.8;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 30px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-10px);}
+            60% {transform: translateY(-5px);}
+        }
+
+        /* Sections */
+        section {
+            padding: 100px 0;
+            position: relative;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            margin-bottom: 50px;
+            border-left: 5px solid var(--primary);
+            padding-left: 20px;
+            opacity: 0; /* For animation */
+            transform: translateX(-50px);
+            transition: all 1s ease;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        /* Cards */
+        .card {
+            background: var(--glass);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(50px);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.2);
+            border-color: var(--primary);
+        }
+
+        .card-img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .card:hover .card-img {
+            transform: scale(1.1);
+        }
+
+        .card-content {
+            padding: 25px;
+        }
+
+        .card h3 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .tag {
+            display: inline-block;
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            padding: 5px 10px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+
+        /* Specific Layouts */
+        .highlight-box {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            background: rgba(255,255,255,0.03);
+            border-radius: 30px;
+            margin-top: 50px;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        
+        .highlight-img {
+            flex: 1;
+            min-width: 300px;
+            height: 400px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .highlight-text {
+            flex: 1;
+            padding: 40px;
+            min-width: 300px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 50px;
+            background: #000;
+            margin-top: 50px;
+            border-top: 1px solid #333;
+        }
+
+        /* Utilities for Animation */
+        .visible {
+            opacity: 1 !important;
+            transform: translateX(0) translateY(0) !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            header h1 { font-size: 2.5rem; }
+            .section-title { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-gradient">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+    </div>
+
+    <header>
+        <div class="container">
+            <p style="color: var(--primary); letter-spacing: 3px; font-weight: bold;">SISTEMAS COMPUTACIONALES</p>
+            <h1>Arquitectura del Hardware</h1>
+            <p>Tema 3.2: Aplicaciones de Entrada/Salida, Almacenamiento y Fuentes de Alimentación.</p>
+        </div>
+        <div class="scroll-indicator">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
+                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
+            </svg>
+        </div>
+    </header>
+
+    <div class="container">
+
+        <section id="entrada-salida">
+            <h2 class="section-title">1. Entrada y Salida (I/O)</h2>
+            <p style="margin-bottom: 30px; max-width: 700px; line-height: 1.6;">
+                Los dispositivos de E/S son el puente entre el usuario y el procesamiento digital. Permiten la interacción bidireccional de datos.
+            </p>
+
+            <div class="card-grid">
+                <article class="card">
+                    <img src="https://images.unsplash.com/photo-1560429506-b505b229870b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dGVjbGFkb3MlMjBtZWNhbmljb3N8ZW58MHx8MHx8fDA%3D" alt="Teclado Mecánico" class="card-img">
+                    <div class="card-content">
+                        <span class="tag">Entrada</span>
+                        <h3>Dispositivos de Interfaz Humana</h3>
+                        <p>Teclados mecánicos, ratones de alta precisión y tabletas digitalizadoras convierten movimientos físicos en señales digitales.</p>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="https://images.unsplash.com/photo-1608511271453-7b293dc27bce?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Monitor 4K" class="card-img">
+                    <div class="card-content">
+                        <span class="tag">Salida</span>
+                        <h3>Visualización y Audio</h3>
+                        <p>Monitores de alta frecuencia (Hz), proyectores y sistemas de audio que decodifican la información binaria en luz y sonido.</p>
+                    </div>
+                </article>
+
+                <article class="card">
+                    <img src="https://media.istockphoto.com/id/1453309989/es/foto/conexi%C3%B3n-del-cable-de-internet-al-m%C3%B3dem-adsl-antiguo.webp?a=1&b=1&s=612x612&w=0&k=20&c=gNGU0PsgRLgWoAhXy_V-RBkIwsOmkdJ2s7ooNDJFJ00=" alt="Interfaz de Red" class="card-img">
+                    <div class="card-content">
+                        <span class="tag">Mixto (E/S)</span>
+                        <h3>Interfaces de Red</h3>
+                        <p>Tarjetas de red y módems que actúan simultáneamente como entrada (descarga) y salida (carga) de paquetes de datos.</p>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section id="almacenamiento">
+            <h2 class="section-title">2. Almacenamiento</h2>
+            <p style="margin-bottom: 30px;">La jerarquía de memoria es crucial para el rendimiento del sistema.</p>
+
+            <div class="highlight-box fade-in-element">
+                <div class="highlight-img" style="background-image: url('https://images.unsplash.com/photo-1597852074816-d933c7d2b988?q=80&w=800&auto=format&fit=crop');"></div>
+                <div class="highlight-text">
+                    <h3>HDD vs SSD vs NVMe</h3>
+                    <p style="margin: 20px 0; line-height: 1.6;">
+                        La evolución del almacenamiento ha sido exponencial:
+                    </p>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li style="margin-bottom: 15px; border-left: 3px solid #555; padding-left: 15px;">
+                            <strong style="color: #aaa;">HDD (Disco Duro):</strong> Magnético, mecánico, lento pero económico para grandes volúmenes.
+                        </li>
+                        <li style="margin-bottom: 15px; border-left: 3px solid var(--primary); padding-left: 15px;">
+                            <strong style="color: var(--primary);">SSD SATA:</strong> Chips de memoria flash, sin partes móviles, 5x más rápido que HDD.
+                        </li>
+                        <li style="margin-bottom: 15px; border-left: 3px solid var(--secondary); padding-left: 15px;">
+                            <strong style="color: var(--secondary);">M.2 NVMe:</strong> Conectado directamente al bus PCI Express, velocidades de hasta 7000 MB/s.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="fuente">
+            <h2 class="section-title">3. Fuente de Alimentación (PSU)</h2>
+            
+            <div class="card-grid">
+                <div class="card" style="grid-column: span 1;">
+                   <img src="https://images.unsplash.com/photo-1716062890647-60feae0609d0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZnVlbnRlJTIwZGUlMjBhbGltZW50YWNpb258ZW58MHx8MHx8fDA%3D" alt="PSU Cables" class="card-img">
+                </div>
+                <div class="card" style="grid-column: span 2; display: flex; align-items: center;">
+                    <div class="card-content">
+                        <h3>El Corazón del Sistema</h3>
+                        <p style="margin-bottom: 20px;">La PSU (Power Supply Unit) convierte la corriente alterna (AC) del enchufe en corriente continua (DC) de bajo voltaje para los componentes.</p>
+                        
+                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; flex: 1;">
+                                <h4 style="color: #ffd700;">80 PLUS Gold</h4>
+                                <p style="font-size: 0.8rem;">Eficiencia energética superior al 87%.</p>
+                            </div>
+                            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; flex: 1;">
+                                <h4 style="color: var(--primary);">Rail de 12V</h4>
+                                <p style="font-size: 0.8rem;">Crítico para CPU y GPU de alto rendimiento.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <footer>
+        <p>Arquitectura de Computadoras &copy; 2025</p>
+        <p style="font-size: 0.8rem; color: #666;">By ortiz117</p>
+    </footer>
+
+    <script>
+        // Intersection Observer para animaciones al hacer scroll
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // Solo animar una vez
+                }
+            });
+        }, observerOptions);
+
+        // Seleccionar elementos a animar
+        const animatedElements = document.querySelectorAll('.card, .section-title, .highlight-box');
+        
+        animatedElements.forEach((el) => {
+            observer.observe(el);
+        });
+
+        // Efecto Parallax suave para las esferas de fondo
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            const orb1 = document.querySelector('.orb-1');
+            const orb2 = document.querySelector('.orb-2');
+
+            orb1.style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            orb2.style.transform = `translate(-${x * 30}px, -${y * 30}px)`;
+        });
+    </script>
+</body>
+</html>
