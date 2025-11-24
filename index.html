@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Infografía: Hardware 3.2</title>
+    <title>Infografía Interactiva: Hardware 3.2</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
@@ -12,16 +14,14 @@
         :root {
             --primary: #00f2ff;
             --secondary: #7000ff;
+            --accent: #ff0055;
             --dark: #0a0a12;
             --glass: rgba(255, 255, 255, 0.05);
+            --glass-hover: rgba(255, 255, 255, 0.1);
             --text: #e0e0e0;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Roboto', sans-serif;
@@ -30,207 +30,154 @@
             overflow-x: hidden;
         }
 
-        h1, h2, h3 {
+        h1, h2, h3, h4 {
             font-family: 'Orbitron', sans-serif;
             text-transform: uppercase;
             letter-spacing: 2px;
         }
 
-        /* Background Animation */
+        /* --- UI Elements --- */
+        .btn {
+            background: linear-gradient(90deg, var(--secondary), var(--primary));
+            border: none;
+            padding: 10px 20px;
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            margin-top: 10px;
+            box-shadow: 0 0 10px rgba(0, 242, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(0, 242, 255, 0.6);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        
+        .btn-outline.active {
+            background: var(--primary);
+            color: black;
+            box-shadow: 0 0 15px var(--primary);
+        }
+
+        /* --- Background Animation --- */
         .bg-gradient {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
+            top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
             background: radial-gradient(circle at 10% 20%, #1a1a2e 0%, #000000 90%);
         }
-
         .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
+            position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.4;
             animation: float 10s infinite ease-in-out;
         }
-
         .orb-1 { width: 300px; height: 300px; background: var(--primary); top: -50px; left: -50px; }
         .orb-2 { width: 400px; height: 400px; background: var(--secondary); bottom: 0; right: 0; animation-delay: -5s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(30px, 50px); } }
 
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(30px, 50px); }
-        }
+        .container { max-width: 1200px; margin: 0 auto; padding: 20px; }
 
-        /* Container */
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        /* Hero Section */
+        /* --- Header --- */
         header {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            position: relative;
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
         }
-
         header h1 {
-            font-size: 4rem;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
             background: linear-gradient(to right, var(--primary), var(--secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 20px;
-            text-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            margin-bottom: 20px; text-shadow: 0 0 20px rgba(0, 242, 255, 0.3);
         }
 
-        header p {
-            font-size: 1.5rem;
-            max-width: 600px;
-            opacity: 0.8;
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 30px;
-            animation: bounce 2s infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
-            40% {transform: translateY(-10px);}
-            60% {transform: translateY(-5px);}
-        }
-
-        /* Sections */
-        section {
-            padding: 100px 0;
-            position: relative;
-        }
-
+        /* --- Sections & Cards --- */
+        section { padding: 80px 0; }
+        
         .section-title {
-            font-size: 3rem;
-            margin-bottom: 50px;
-            border-left: 5px solid var(--primary);
+            font-size: 2.5rem; margin-bottom: 50px; border-left: 5px solid var(--primary);
             padding-left: 20px;
-            opacity: 0; /* For animation */
-            transform: translateX(-50px);
-            transition: all 1s ease;
         }
 
         .card-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;
         }
 
-        /* Cards */
         .card {
-            background: var(--glass);
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 20px;
-            overflow: hidden;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            transform: translateY(50px);
+            background: var(--glass); backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px;
+            overflow: hidden; transition: 0.3s ease; position: relative;
         }
+        .card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .card-img { width: 100%; height: 200px; object-fit: cover; }
+        .card-content { padding: 25px; }
 
-        .card.visible {
-            opacity: 1;
-            transform: translateY(0);
+        /* --- Modal (Overlay) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px);
+            z-index: 1000; display: flex; justify-content: center; align-items: center;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 30px rgba(0, 242, 255, 0.2);
-            border-color: var(--primary);
-        }
-
-        .card-img {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .card:hover .card-img {
-            transform: scale(1.1);
-        }
-
-        .card-content {
-            padding: 25px;
-        }
-
-        .card h3 {
-            color: var(--primary);
-            margin-bottom: 10px;
-        }
-
-        .tag {
-            display: inline-block;
-            background: linear-gradient(45deg, var(--secondary), var(--primary));
-            padding: 5px 10px;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: bold;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        /* Specific Layouts */
-        .highlight-box {
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            background: rgba(255,255,255,0.03);
-            border-radius: 30px;
-            margin-top: 50px;
-            overflow: hidden;
-            opacity: 0;
-            transition: opacity 1s ease;
-        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
         
-        .highlight-img {
-            flex: 1;
-            min-width: 300px;
-            height: 400px;
-            background-size: cover;
-            background-position: center;
+        .modal-content {
+            background: #111; border: 1px solid var(--primary);
+            padding: 40px; border-radius: 20px; max-width: 600px; width: 90%;
+            position: relative; box-shadow: 0 0 50px rgba(0, 242, 255, 0.2);
+            transform: scale(0.8); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .modal-overlay.open .modal-content { transform: scale(1); }
+        .close-btn {
+            position: absolute; top: 15px; right: 20px; font-size: 2rem;
+            cursor: pointer; color: var(--accent);
         }
 
-        .highlight-text {
-            flex: 1;
-            padding: 40px;
-            min-width: 300px;
+        /* --- Storage Tabs --- */
+        .storage-container {
+            background: rgba(255,255,255,0.03); border-radius: 20px; padding: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .tabs { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap;}
+        
+        .speed-bar-container {
+            width: 100%; height: 30px; background: rgba(255,255,255,0.1);
+            border-radius: 15px; margin-top: 20px; overflow: hidden; position: relative;
+        }
+        .speed-bar {
+            height: 100%; background: linear-gradient(90deg, var(--secondary), var(--primary));
+            width: 0%; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; align-items: center; justify-content: flex-end; padding-right: 10px;
+            color: black; font-weight: bold; font-size: 0.8rem;
         }
 
-        /* Footer */
-        footer {
-            text-align: center;
-            padding: 50px;
-            background: #000;
-            margin-top: 50px;
-            border-top: 1px solid #333;
+        /* --- PSU Calculator --- */
+        .psu-calc {
+            display: flex; gap: 20px; flex-wrap: wrap; align-items: center;
+            background: linear-gradient(45deg, rgba(20,20,30,0.9), rgba(10,10,20,0.9));
+            padding: 30px; border-radius: 20px; border: 1px solid var(--secondary);
+        }
+        .range-slider {
+            -webkit-appearance: none; width: 100%; height: 10px; border-radius: 5px;
+            background: #333; outline: none; margin: 20px 0;
+        }
+        .range-slider::-webkit-slider-thumb {
+            -webkit-appearance: none; width: 25px; height: 25px; border-radius: 50%;
+            background: var(--primary); cursor: pointer; box-shadow: 0 0 10px var(--primary);
+        }
+        .watt-display {
+            font-size: 3rem; color: var(--primary); font-family: 'Orbitron'; text-shadow: 0 0 20px var(--primary);
         }
 
-        /* Utilities for Animation */
-        .visible {
-            opacity: 1 !important;
-            transform: translateX(0) translateY(0) !important;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            header h1 { font-size: 2.5rem; }
-            .section-title { font-size: 2rem; }
-        }
+        footer { text-align: center; padding: 50px; background: #000; margin-top: 50px; border-top: 1px solid #333; }
+        
+        [x-cloak] { display: none !important; }
     </style>
 </head>
 <body>
@@ -242,103 +189,143 @@
 
     <header>
         <div class="container">
-            <p style="color: var(--primary); letter-spacing: 3px; font-weight: bold;">SISTEMAS COMPUTACIONALES</p>
-            <h1>Arquitectura del Hardware</h1>
-            <p>Tema 3.2: Aplicaciones de Entrada/Salida, Almacenamiento y Fuentes de Alimentación.</p>
-        </div>
-        <div class="scroll-indicator">
-            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">
-                <path d="M7 13l5 5 5-5M7 6l5 5 5-5"/>
-            </svg>
+            <h1>Tema 3.2<br>Aplicaciones entrada salida almacenamiento y fuente de alimentación</h1>
+            <br>
+            <button onclick="document.getElementById('entrada-salida').scrollIntoView({behavior: 'smooth'})" class="btn">
+                Iniciar Experiencia ▼
+            </button>
         </div>
     </header>
 
     <div class="container">
 
-        <section id="entrada-salida">
-            <h2 class="section-title">1. Entrada y Salida (I/O)</h2>
-            <p style="margin-bottom: 30px; max-width: 700px; line-height: 1.6;">
-                Los dispositivos de E/S son el puente entre el usuario y el procesamiento digital. Permiten la interacción bidireccional de datos.
-            </p>
+        <section id="entrada-salida" x-data="{ openModal: null }">
+            <h2 class="section-title">1. Interacción E/S</h2>
+            <p style="margin-bottom: 30px;">Haz clic en las tarjetas para ver los datos técnicos.</p>
 
             <div class="card-grid">
                 <article class="card">
-                    <img src="https://images.unsplash.com/photo-1560429506-b505b229870b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8dGVjbGFkb3MlMjBtZWNhbmljb3N8ZW58MHx8MHx8fDA%3D" alt="Teclado Mecánico" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1560429506-b505b229870b?w=600&auto=format&fit=crop&q=60" alt="Input" class="card-img">
                     <div class="card-content">
-                        <span class="tag">Entrada</span>
-                        <h3>Dispositivos de Interfaz Humana</h3>
-                        <p>Teclados mecánicos, ratones de alta precisión y tabletas digitalizadoras convierten movimientos físicos en señales digitales.</p>
+                        <h3>Entrada (Input)</h3>
+                        <p>Dispositivos que envían datos a la CPU.</p>
+                        <button @click="openModal = 1" class="btn">Analizar Datos</button>
                     </div>
                 </article>
 
                 <article class="card">
-                    <img src="https://images.unsplash.com/photo-1608511271453-7b293dc27bce?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Monitor 4K" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1608511271453-7b293dc27bce?q=80&w=600&auto=format&fit=crop" alt="Output" class="card-img">
                     <div class="card-content">
-                        <span class="tag">Salida</span>
-                        <h3>Visualización y Audio</h3>
-                        <p>Monitores de alta frecuencia (Hz), proyectores y sistemas de audio que decodifican la información binaria en luz y sonido.</p>
+                        <h3>Salida (Output)</h3>
+                        <p>Dispositivos que reciben y proyectan datos.</p>
+                        <button @click="openModal = 2" class="btn">Analizar Datos</button>
                     </div>
                 </article>
 
                 <article class="card">
-                    <img src="https://media.istockphoto.com/id/1453309989/es/foto/conexi%C3%B3n-del-cable-de-internet-al-m%C3%B3dem-adsl-antiguo.webp?a=1&b=1&s=612x612&w=0&k=20&c=gNGU0PsgRLgWoAhXy_V-RBkIwsOmkdJ2s7ooNDJFJ00=" alt="Interfaz de Red" class="card-img">
+                    <img src="https://images.unsplash.com/photo-1546124404-9e7e3cac2ec1?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8aW1hZ2VuZXMlMjBkZSUyMHJvdXRlcnN8ZW58MHx8MHx8fDA%3D" alt="Mixto" class="card-img">
                     <div class="card-content">
-                        <span class="tag">Mixto (E/S)</span>
-                        <h3>Interfaces de Red</h3>
-                        <p>Tarjetas de red y módems que actúan simultáneamente como entrada (descarga) y salida (carga) de paquetes de datos.</p>
+                        <h3>E/S Mixta</h3>
+                        <p>Comunicación bidireccional de red.</p>
+                        <button @click="openModal = 3" class="btn">Analizar Datos</button>
                     </div>
                 </article>
             </div>
-        </section>
 
-        <section id="almacenamiento">
-            <h2 class="section-title">2. Almacenamiento</h2>
-            <p style="margin-bottom: 30px;">La jerarquía de memoria es crucial para el rendimiento del sistema.</p>
-
-            <div class="highlight-box fade-in-element">
-                <div class="highlight-img" style="background-image: url('https://images.unsplash.com/photo-1597852074816-d933c7d2b988?q=80&w=800&auto=format&fit=crop');"></div>
-                <div class="highlight-text">
-                    <h3>HDD vs SSD vs NVMe</h3>
-                    <p style="margin: 20px 0; line-height: 1.6;">
-                        La evolución del almacenamiento ha sido exponencial:
-                    </p>
-                    <ul style="list-style: none; padding-left: 0;">
-                        <li style="margin-bottom: 15px; border-left: 3px solid #555; padding-left: 15px;">
-                            <strong style="color: #aaa;">HDD (Disco Duro):</strong> Magnético, mecánico, lento pero económico para grandes volúmenes.
-                        </li>
-                        <li style="margin-bottom: 15px; border-left: 3px solid var(--primary); padding-left: 15px;">
-                            <strong style="color: var(--primary);">SSD SATA:</strong> Chips de memoria flash, sin partes móviles, 5x más rápido que HDD.
-                        </li>
-                        <li style="margin-bottom: 15px; border-left: 3px solid var(--secondary); padding-left: 15px;">
-                            <strong style="color: var(--secondary);">M.2 NVMe:</strong> Conectado directamente al bus PCI Express, velocidades de hasta 7000 MB/s.
-                        </li>
+            <div class="modal-overlay" :class="{ 'open': openModal !== null }" @click.self="openModal = null">
+                <div class="modal-content" x-show="openModal === 1">
+                    <span class="close-btn" @click="openModal = null">&times;</span>
+                    <h2 style="color:var(--primary)">Dispositivos de Entrada</h2>
+                    <p style="margin: 20px 0;">Convierten acciones físicas (teclear, mover, hablar) en señales binarias.</p>
+                    <ul style="padding-left: 20px; line-height: 2;">
+                        <li><strong>Interrupción:</strong> Generan una IRQ al procesador.</li>
+                        <li><strong>Polling:</strong> La CPU pregunta constantemente si hay datos.</li>
+                        <li><strong>DMA:</strong> Acceso directo a memoria sin molestar a la CPU.</li>
                     </ul>
                 </div>
+
+                <div class="modal-content" x-show="openModal === 2">
+                    <span class="close-btn" @click="openModal = null">&times;</span>
+                    <h2 style="color:var(--secondary)">Dispositivos de Salida</h2>
+                    <p style="margin: 20px 0;">Transforman bits en señales legibles para humanos (Luz, Sonido).</p>
+                    <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px;">
+                        <strong>Dato Curioso:</strong> Un monitor de 144Hz actualiza la imagen 144 veces por segundo, requiriendo un ancho de banda masivo en el puerto HDMI o DisplayPort.
+                    </div>
+                </div>
+
+                <div class="modal-content" x-show="openModal === 3">
+                    <span class="close-btn" @click="openModal = null">&times;</span>
+                    <h2 style="color:white">Almacenamiento y Red</h2>
+                    <p>Estos dispositivos funcionan en ambos sentidos.</p>
+                    <img src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?q=80&w=400&auto=format&fit=crop" style="width: 100%; border-radius: 10px; margin-top: 10px;">
+                </div>
             </div>
         </section>
 
-        <section id="fuente">
-            <h2 class="section-title">3. Fuente de Alimentación (PSU)</h2>
+        <section id="almacenamiento" x-data="{ activeTab: 'hdd' }">
+            <h2 class="section-title">2. Velocidad de Almacenamiento</h2>
             
-            <div class="card-grid">
-                <div class="card" style="grid-column: span 1;">
-                   <img src="https://images.unsplash.com/photo-1716062890647-60feae0609d0?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8ZnVlbnRlJTIwZGUlMjBhbGltZW50YWNpb258ZW58MHx8MHx8fDA%3D" alt="PSU Cables" class="card-img">
+            <div class="storage-container">
+                <div class="tabs">
+                    <button class="btn btn-outline" :class="{ 'active': activeTab === 'hdd' }" @click="activeTab = 'hdd'">HDD Mecánico</button>
+                    <button class="btn btn-outline" :class="{ 'active': activeTab === 'ssd' }" @click="activeTab = 'ssd'">SSD SATA</button>
+                    <button class="btn btn-outline" :class="{ 'active': activeTab === 'nvme' }" @click="activeTab = 'nvme'">M.2 NVMe</button>
                 </div>
-                <div class="card" style="grid-column: span 2; display: flex; align-items: center;">
-                    <div class="card-content">
-                        <h3>El Corazón del Sistema</h3>
-                        <p style="margin-bottom: 20px;">La PSU (Power Supply Unit) convierte la corriente alterna (AC) del enchufe en corriente continua (DC) de bajo voltaje para los componentes.</p>
-                        
-                        <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-                            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; flex: 1;">
-                                <h4 style="color: #ffd700;">80 PLUS Gold</h4>
-                                <p style="font-size: 0.8rem;">Eficiencia energética superior al 87%.</p>
-                            </div>
-                            <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; flex: 1;">
-                                <h4 style="color: var(--primary);">Rail de 12V</h4>
-                                <p style="font-size: 0.8rem;">Crítico para CPU y GPU de alto rendimiento.</p>
-                            </div>
+
+                <div class="content-area" style="min-height: 200px;">
+                    <div x-show="activeTab === 'hdd'" x-transition>
+                        <h3>Disco Duro (HDD)</h3>
+                        <p>Tecnología magnética. Platos girando a 7200 RPM. Barato pero lento.</p>
+                        <div class="speed-bar-container">
+                            <div class="speed-bar" style="width: 15%;">150 MB/s</div>
                         </div>
+                    </div>
+
+                    <div x-show="activeTab === 'ssd'" x-transition>
+                        <h3>Estado Sólido (SSD)</h3>
+                        <p>Memorias Flash NAND. Sin partes móviles. Silencioso y rápido.</p>
+                        <div class="speed-bar-container">
+                            <div class="speed-bar" style="width: 45%;">550 MB/s</div>
+                        </div>
+                    </div>
+
+                    <div x-show="activeTab === 'nvme'" x-transition>
+                        <h3>NVMe (Gen 4)</h3>
+                        <p>Conexión directa a PCIe. Velocidad extrema para gaming y servidores.</p>
+                        <div class="speed-bar-container">
+                            <div class="speed-bar" style="width: 100%;">7000 MB/s</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="fuente" x-data="{ load: 50 }">
+            <h2 class="section-title">3. Fuente de Poder (PSU)</h2>
+            <p>Calcula interactivamente cuánta energía necesita tu sistema.</p>
+            <br>
+
+            <div class="psu-calc">
+                <div style="flex: 1; min-width: 300px;">
+                    <h3>Nivel de tu Tarjeta Gráfica</h3>
+                    <p style="font-size: 0.9rem; color: #aaa;">Desliza para simular la carga del sistema</p>
+                    
+                    <input type="range" min="1" max="100" x-model="load" class="range-slider">
+                    
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
+                        <span>Oficina (iGPU)</span>
+                        <span>Gamer (RTX 4060)</span>
+                        <span>Ultra (RTX 4090)</span>
+                    </div>
+                </div>
+
+                <div style="flex: 1; text-align: center; min-width: 250px; border-left: 1px solid #333;">
+                    <p>Potencia Recomendada:</p>
+                    <div class="watt-display">
+                        <span x-text="Math.floor(300 + (load * 5.5))"></span> W
+                    </div>
+                    <div x-show="load > 80" style="color: var(--accent); margin-top: 10px; font-weight: bold; animation: pulse 1s infinite;">
+                        ¡REQUIERE CERTIFICACIÓN GOLD!
                     </div>
                 </div>
             </div>
@@ -347,44 +334,15 @@
     </div>
 
     <footer>
-        <p>Arquitectura de Computadoras &copy; 2025</p>
-        <p style="font-size: 0.8rem; color: #666;">By ortiz117</p>
+        <p>Arquitectura de Computadoras &copy; 2025 - By ortiz117 - Jesusnicmol</p>
     </footer>
 
     <script>
-        // Intersection Observer para animaciones al hacer scroll
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target); // Solo animar una vez
-                }
-            });
-        }, observerOptions);
-
-        // Seleccionar elementos a animar
-        const animatedElements = document.querySelectorAll('.card, .section-title, .highlight-box');
-        
-        animatedElements.forEach((el) => {
-            observer.observe(el);
-        });
-
-        // Efecto Parallax suave para las esferas de fondo
         document.addEventListener('mousemove', (e) => {
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
-            
-            const orb1 = document.querySelector('.orb-1');
-            const orb2 = document.querySelector('.orb-2');
-
-            orb1.style.transform = `translate(${x * 30}px, ${y * 30}px)`;
-            orb2.style.transform = `translate(-${x * 30}px, -${y * 30}px)`;
+            document.querySelector('.orb-1').style.transform = `translate(${x * 30}px, ${y * 30}px)`;
+            document.querySelector('.orb-2').style.transform = `translate(-${x * 30}px, -${y * 30}px)`;
         });
     </script>
 </body>
